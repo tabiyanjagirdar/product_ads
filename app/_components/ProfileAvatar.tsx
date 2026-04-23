@@ -4,6 +4,7 @@ import { signOut } from 'firebase/auth';
 import Image from 'next/image';
 import React, { useEffect } from 'react'
 import { useAuthContext } from '../provider';
+import AnimatedCartoonAvatar from './AnimatedCartoonAvatar';
 import {
     Popover,
     PopoverContent,
@@ -35,11 +36,23 @@ function ProfileAvatar() {
         <div>
             <Popover >
                 <PopoverTrigger>
-                    {user?.user?.photoURL && <img src={user?.user?.photoURL} alt='profile' className='w-[35px] h-[35px] rounded-full' />}
+                    <AnimatedCartoonAvatar
+                        photoURL={user?.user?.photoURL || undefined}
+                        displayName={user?.user?.displayName || 'User'}
+                        className='w-[40px] h-[40px]'
+                    />
                 </PopoverTrigger>
                 <PopoverContent className='w-full mx-w-lg cursor-pointer'>
-                    <h2 onClick={onButtonPress}>Logout</h2>
-
+                    <div className='space-y-2'>
+                        <h3 className='font-semibold'>{user?.user?.displayName}</h3>
+                        <p className='text-sm text-gray-600'>{user?.user?.email}</p>
+                        <button 
+                            onClick={onButtonPress}
+                            className='w-full mt-4 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition'
+                        >
+                            Logout
+                        </button>
+                    </div>
                 </PopoverContent>
             </Popover>
         </div>
