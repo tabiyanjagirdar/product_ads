@@ -1,10 +1,12 @@
 "use client"
 import { auth } from '@/configs/firebaseConfig';
 import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+import { useRouter } from 'next/navigation';
 import React, { useEffect } from 'react'
 
 function Authentication({ children }: any) {
     const provider = new GoogleAuthProvider();
+    const router = useRouter();
 
     const onButtonPress = () => {
         if (!auth) {
@@ -21,6 +23,8 @@ function Authentication({ children }: any) {
                 // The signed-in user info.
                 const user = result.user;
                 console.log(user);
+                // Redirect to /app after successful sign-in
+                router.push('/app');
                 // IdP data available using getAdditionalUserInfo(result)
                 // ...
             }).catch((error) => {

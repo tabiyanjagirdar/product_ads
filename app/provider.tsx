@@ -2,7 +2,7 @@
 import { auth, db } from '@/configs/firebaseConfig';
 import { AuthContext } from '@/context/AuthContext';
 import { onAuthStateChanged, User } from 'firebase/auth';
-import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { doc, getDoc, setDoc, serverTimestamp } from 'firebase/firestore';
 import React, { useContext, useEffect, useState } from 'react'
 import { ThemeProvider as NextThemesProvider } from "next-themes"
 interface AuthContextType {
@@ -23,6 +23,8 @@ function Provider({
         const unsubscribe = onAuthStateChanged(auth, async (user) => {
             if (user) {
                 setUser(user);
+                // eslint-disable-next-line no-console
+                console.log('User signed in:', user);
 
                 // Save to Firestore if not exists and db is initialized
                 if (db) {
@@ -31,23 +33,37 @@ function Provider({
                         const userSnap = await getDoc(userRef);
 
                         if (!userSnap.exists()) {
-                            await setDoc(userRef, {
+                            const userData = {
                                 uid: user.uid,
                                 email: user.email,
                                 displayName: user.displayName,
                                 photoURL: user.photoURL,
-                                createdAt: new Date(),
-                            });
+                                createdAt: serverTimestamp(),
+                                credits:20
+                            };
+                            // eslint-disable-next-line no-console
+                            console.log('Saving user to Firestore:', userData);
+                            await setDoc(userRef, userData);
+                            // eslint-disable-next-line no-console
+                            console.log('User saved successfully to Firestore');
+                        } else {
+                            // eslint-disable-next-line no-console
+                            console.log('User already exists in Firestore');
                         }
                     } catch (error) {
                         // Log Firestore errors but don't break auth flow
                         // Common errors: offline, permission-denied, network-error
                         // eslint-disable-next-line no-console
-                        console.warn('Failed to save user to Firestore:', error);
+                        console.error('Failed to save user to Firestore:', error);
                     }
+                } else {
+                    // eslint-disable-next-line no-console
+                    console.warn('Firestore (db) is not initialized');
                 }
             } else {
                 setUser(null);
+                // eslint-disable-next-line no-console
+                console.log('User signed out');
             }
         });
 
