@@ -25,14 +25,40 @@ const sampleProducts=[
     
 ]
 
+
+const AvatarList=[
+  {
+    name:'Avatar 1',
+    image:'https://ik.imagekit.io/tgfdjceog/Avatar/serious-young-african-man-standing-isolated.jpg'
+  },
+  {
+    name:'Avatar 2',
+    image:'https://ik.imagekit.io/tgfdjceog/Avatar/premium_photo-1689568126014-06fea9d5d341.avif'
+  },
+  {
+    name:'Avatar 3',
+    image:'https://ik.imagekit.io/tgfdjceog/Avatar/photo-1534528741775-53994a69daeb.avif'
+  },
+  {
+    name:'Avatar 4',
+    image:'https://ik.imagekit.io/tgfdjceog/Avatar/premium_photo-1671656349322-41de944d259b.avif'
+  },
+  {
+    name:'Avatar 5',
+    image:'https://ik.imagekit.io/tgfdjceog/Avatar/premium_photo-1689551670902-19b441a6afde.avif'
+  }
+]
+
 type Props={
     onHandleInputChange: any,
     OnGenerate:any,
-    loading:boolean
+    loading:boolean,
+    enableAvatar:boolean
 }
 
-function FormsInput({onHandleInputChange, OnGenerate, loading}:Props) {
+function FormsInput({onHandleInputChange, OnGenerate, loading, enableAvatar}:Props) {
     const [preview,setPreview]=useState<string | null>();
+    const  [selectedAvatar,setSelectedAvatar]=useState<string>();
     const onFileSelect=(files:FileList | null)=>{
         if(!files || files.length === 0) return;
         const file = files[0];
@@ -65,7 +91,7 @@ function FormsInput({onHandleInputChange, OnGenerate, loading}:Props) {
             onChange={(event)=>onFileSelect(event.target.files)}/>
         </div>
 {/* Sample Products */}
-<div>
+{!enableAvatar&&<div>
     <h2 className='opacity-40 text-center mt-3'>Select sample product to try</h2>
         <div className='flex gap-5 items-center'>
 
@@ -77,8 +103,26 @@ function FormsInput({onHandleInputChange, OnGenerate, loading}:Props) {
     }} />
 ))}
         </div>
+      </div>}
       </div>
-      </div>
+
+      {enableAvatar&&
+      <div className='mt-8'>
+        <h2 className='font-semibold'>
+            Select Avatar
+        </h2>
+        <div className='grid grid-cols-5 gap-3'>
+          {AvatarList.map((avatar,index)=>(
+          <Image src={avatar.image} alt={avatar.name} width={200} height={200} key={index}
+           className={`rounded-lg h-[100px] w-[80px] object-cover cursor-pointer
+            ${avatar.name==selectedAvatar && 'border-2 border-primary'}`}
+           onClick={()=>{setSelectedAvatar(avatar.name);onHandleInputChange('avatar',avatar.image)}}
+           />
+          ))}
+        </div>
+      </div>}
+
+
       <div className='mt-8'>
         <h2 className='font-semibold'>
             2. Enter Product Description
@@ -87,6 +131,8 @@ function FormsInput({onHandleInputChange, OnGenerate, loading}:Props) {
         className='min-h-[150px] mt-2'
         onChange={(event)=>onHandleInputChange('description',event.target.value)}/>
       </div>
+
+
       <div className='mt-8'>
         <h2 className='font-semibold'>
             3. Select Image Size
@@ -129,3 +175,4 @@ function FormsInput({onHandleInputChange, OnGenerate, loading}:Props) {
 }
 
 export default FormsInput
+

@@ -1,7 +1,10 @@
+
+'use client'
 import React from 'react'
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import { useAuthContext } from '@/app/provider';
 
 const Aitools = [
     {
@@ -14,17 +17,18 @@ const Aitools = [
         name: 'AI Product Video',
         desc:'Create engaging product showcase videos with AI in minutes',
         bannerImage:'/product-video.png',
-        path:'/'
+        path:'/creative-ai-tools/product-video'
     },
     {
         name: 'AI Product With Avatar',
         desc:'Bring your products to life with AI-generated avatars.',
         bannerImage:'/product-avatar.png',
-        path:'/'
+        path:'/creative-ai-tools/product-avatar'
     }
 ]
 
 function AiToolList() {
+    const {user} = useAuthContext();
   return (
     <div>
       <h2 className='font-bold text-2xl mb-2'>Creative AI Tools</h2>
@@ -34,7 +38,7 @@ function AiToolList() {
                 <div>  
                     <h2 className='font-bold text-2xl'>{tool.name}</h2>
                     <p className='opacity-60 mt-2'>{tool.desc}</p>
-                    <Link href={tool.path}>
+                    <Link href={user?tool.path:'/login'}>
                     <Button className='mt-4'>Create Now</Button>
                     </Link>
                 </div>

@@ -27,12 +27,12 @@ const items = [
     },
     {
         title: "Creative Tools",
-        url: "/creative-tools",
+        url: "/creative-ai-tools",
         icon: Inbox,
     },
     {
         title: "My Ads",
-        url: "#",
+        url: "/my-ads",
         icon: Megaphone,
     },
     {
@@ -88,7 +88,7 @@ export function AppSidebar() {
                     <h2>Profile</h2>
                 <ProfileAvatar />
                 </div>}
-                <h2 className='p-2 text-gray-400 text-sm'>Copyright @Logoipsum</h2>
+                <h2 className='p-2 text-gray-400 text-sm'>Copyright @Rehana</h2>
             </SidebarFooter>
         </Sidebar>
     )

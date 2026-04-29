@@ -22,7 +22,7 @@ export function LoginForm({
             <div className="relative z-10">
               <h1 className="text-3xl font-extrabold text-blue-600">Welcome back 👋</h1>
               <p className="text-muted-foreground mt-2">
-                Sign in to your <span className="font-semibold text-pink-600">Fast NextJs</span> By Tubeguruji
+                Sign in to your <span className="font-semibold text-pink-600">Fast NextJs</span> By GPT
               </p>
             </div>
 
